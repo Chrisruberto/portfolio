@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos del Dólar</title>
+    <!-- Incluir Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Incluir Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #87CEFA; /* Azul claro */
+            color: white; /* Texto en blanco */
+        }
+        .centered {
+            text-align: center;
+        }
+        .card-deck {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .card {
+            min-width: 200px;
+            background-color: #1E90FF; /* Fondo de tarjeta en azul medio */
+            color: white;
+        }
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+        .card-title {
+            text-align: center;
+        }
+        .card-text {
+            display: flex;
+            justify-content: space-between;
+        }
+        .text-red {
+            color: #FF4500; /* Rojo más intenso para valores mayores */
+            font-weight: bold; /* Negrita para resaltar más */
+            font-size: 1.1em; /* Aumentar tamaño de texto para mayor visibilidad */
+        }
+        
+        .text-green {
+            color: #228B22; /* Verde más intenso para valores menores */
+            font-weight: bold; /* Negrita para resaltar más */
+            font-size: 1.1em; /* Aumentar tamaño de texto para mayor visibilidad */
+        }
+        .indicator {
+            font-size: 0.8em;
+            vertical-align: middle;
+        }
+        .home-icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Icono de la casita para volver al index -->
+        <a href="{% url 'index' %}" class="home-icon">
+            <i class="fas fa-home"></i> Volver al inicio
+        </a>
+        
+        <!-- Centrar el título y la fecha de actualización -->
+        <div class="text-center my-4">
+            <h1>Dólar hoy</h1>
+            {% if previous_date %}
+                <p class="text">Fecha de actualización: {{ previous_date|date:"d M Y" }}</p>
+            {% else %}
+                <p class="text">Fecha de actualización no disponible.</p>
+            {% endif %}
+        </div>
+        
+        <!-- Centrar las tarjetas -->
+        <div class="row">
+            {% load humanize %}
+            {% load l10n %}
+            {% if data %}
+                <div class="card-deck">
+                    {% for item in data %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ item.nombre }}</h5>
+                                    <p class="card-text">
+                                        <span>
+                                            <strong>Compra:</strong> 
+                                            <span class="{% if item.is_lower %}text-green{% elif item.is_higher %}text-red{% endif %}">
+                                                {{ item.compra|floatformat:2|intcomma }}
+                                                {% if item.is_higher %}
+                                                    <i class="indicator">↑</i>
+                                                {% elif item.is_lower %}
+                                                    <i class="indicator">↓</i>
+                                                {% endif %}
+                                            </span>
+                                        </span>
+                                        <span>
+                                            <strong>Venta:</strong> 
+                                            <span class="{% if item.is_lower_sale %}text-green{% elif item.is_higher_sale %}text-red{% endif %}">
+                                                {{ item.venta|floatformat:2|intcomma }}
+                                                {% if item.is_higher_sale %}
+                                                    <i class="indicator">↑</i>
+                                                {% elif item.is_lower_sale %}
+                                                    <i class="indicator">↓</i>
+                                                {% endif %}
+                                            </span>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% elif error %}
+                <p class="text-danger text-center">Error: {{ error }}</p>
+            {% else %}
+                <p class="text-center">No se encontraron datos.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Incluir Bootstrap JS y dependencias -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Incluir Font Awesome para el icono de la casita -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</body>
+</html>

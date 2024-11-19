@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+    {% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio de Christian Ruberto</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            padding: 20px;
+            background-color: #000000;
+            color: white;
+        }
+    
+        header {
+            background-color: white;
+            color: black; /* Texto negro en el encabezado */
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 40px;
+            margin-top: 300px;
+        }
+    
+        h1, h2, p {
+            color: black; /* Cambia el color de los textos dentro del encabezado a negro */
+        }
+        
+        .card {
+            border: 2px solid orange;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        .card-body {
+            background-color: #222;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+        .card-text {
+            color: white;
+        }
+        .btn-primary {
+            background-color: orange;
+            border-color: orange;
+            align-self: flex-start;
+        }
+        footer {
+            margin-top: 40px;
+        }
+        .language-selector {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: orange;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .nav-links {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: orange;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #projects-title {
+            margin-top: 300px;
+        }
+        section.mb-5 {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Enlaces de navegación -->
+    <div class="nav-links">
+        <button id="btn-projects" class="btn btn-sm" onclick="scrollToSection('projects')">Proyectos</button>
+        <button id="btn-contact" class="btn btn-sm" onclick="scrollToSection('contact')">Contacto</button>
+    </div>
+
+    <!-- Selector de idioma -->
+    <div class="language-selector">
+        <button id="btn-es" class="btn btn-sm" onclick="changeLanguage('es')">ES</button>
+        <button id="btn-en" class="btn btn-sm" onclick="changeLanguage('en')">EN</button>
+    </div>
+
+    <header class="text-center mb-5">
+        <h1 id="title">Christian Ruberto</h1>
+        <h2 id="subtitle">Desarrollador</h2>
+        <p id="intro">
+            <span style="color: orange; font-size: 2em;">{</span>
+            Hola, soy Christian, un desarrollador con experiencia en la implementación de soluciones modernas y escalables,
+            trabajando con tecnologías como Python, Django y PostgreSQL, entre otras, para mejorar la eficiencia de las empresas.
+            <span style="color: orange; font-size: 2em;">}</span>
+        </p>
+    </header>
+
+    <section class="mb-5" id="projects">
+        <h3 id="projects-title" class="text-center mb-4">Mis Proyectos</h3>
+        <div class="card-deck">
+
+            <div class="card">
+                <img src="static/cotizador.png" class="card-img-top" alt="Proyecto 1">
+                <div class="card-body">
+                    <h5 class="card-title" id="project1-title">Cotizador</h5>
+                    <p class="card-text" id="project1-desc">API que obtiene los valores diarios del dólar desde 
+                    <a href="https://dolarapi.com" target="_blank" style="color: orange;">DolarAPI</a>,
+                     permitiendo obtener el valor actualizado del dólar en tiempo real.</p>
+                    <a href="{% url 'endpoint-name' %}" class="btn btn-primary">Go</a>
+                </div>
+            </div>
+            <div class="card">
+                <img src="static/payments.png" class="card-img-top" alt="Proyecto 2">
+                <div class="card-body">
+                    <h5 class="card-title" id="project2-title">Payments</h5>
+                    <p class="card-text" id="project2-desc">Este proyecto consiste en un formulario que permite agregar servicios pagados o por pagar, y realizar un seguimiento mensual de los gastos totales. Los usuarios pueden gestionar los pagos de servicios, controlando el estado de cada uno y el total acumulado por mes.</p>
+                    <a href="{% url 'pago_list' %}" class="btn btn-primary">Go</a>
+                </div>
+            </div>
+            <div class="card">
+                <img src="static/weather.png" class="card-img-top" alt="Proyecto 3">
+                <div class="card-body">
+                    <h5 class="card-title" id="project3-title">Weather</h5>
+                    <p class="card-text" id="project3-desc">Este proyecto permite consultar el clima de cualquier ciudad a través de una API externa, 
+                        mostrando el pronóstico de la semana con temperaturas diarias. Puedes obtener el clima 
+                        de la ciudad que elijas en tiempo real desde 
+                        <a href="http://api.openweathermap.org" target="_blank" style="color: orange;">OpenWeatherMap API</a>.
+                    </p>
+                    <a href="{% url 'get_weather' %}" class="btn btn-primary">Go</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center" id="contact">
+        <h4 id="contact-title">Contacto</h4>
+        <a href="https://linkedin.com/in/christianruberto" class="btn" style="background-color: orange; color: white;">
+            <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+        <a href="mailto:christian_ruberto@hotmail.es" class="btn" style="background-color: orange; color: white;">
+            <i class="fas fa-envelope"></i> Email
+        </a>
+        <a href="https://github.com/Chrisruberto" class="btn" style="background-color: orange; color: white;">
+            <i class="fab fa-github"></i> GitHub
+        </a>
+    </footer>
+
+    <script>
+        // Función para cambiar el idioma
+        function changeLanguage(lang) {
+            const texts = {
+                es: {
+                    title: 'Christian Ruberto',
+                    subtitle: 'Desarrollador',
+                    intro: 'Hola, soy Christian, un desarrollador con experiencia en la implementación de soluciones modernas y escalables, trabajando con tecnologías como Python, Django y PostgreSQL para mejorar la eficiencia de las empresas.',
+                    projectsTitle: 'Mis Proyectos',
+                    contactTitle: 'Contacto'
+                },
+                en: {
+                    title: 'Christian Ruberto',
+                    subtitle: 'Developer',
+                    intro: 'Hi, I am Christian, a developer with experience in implementing modern and scalable solutions, working with technologies like Python, Django, and PostgreSQL to improve business efficiency.',
+                    projectsTitle: 'My Projects',
+                    contactTitle: 'Contact'
+                }
+            };
+    
+            const text = texts[lang];
+    
+            document.getElementById('title').innerText = text.title;
+            document.getElementById('subtitle').innerText = text.subtitle;
+            document.getElementById('intro').innerHTML = '<span style="color: orange; font-size: 2em;">{</span> ' + text.intro + ' <span style="color: orange; font-size: 2em;">}</span>';
+            document.getElementById('projects-title').innerText = text.projectsTitle;
+            document.getElementById('contact-title').innerText = text.contactTitle;
+        }
+
+        // Función para hacer scroll hasta la sección correspondiente
+        function scrollToSection(section) {
+            const sectionElement = document.getElementById(section);
+            window.scrollTo({
+                top: sectionElement.offsetTop - 20, // Ajuste para que no quede oculto debajo de los botones fijos
+                behavior: 'smooth'
+            });
+        }
+        
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

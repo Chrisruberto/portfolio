@@ -1,0 +1,87 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Pagos</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4 text-center text-primary">Pagos por Mes</h1>
+
+        <!-- Botón para crear un nuevo pago -->
+        <div class="mb-4 text-right">
+            <a href="{% url 'create_pago' %}" class="btn btn-success">Crear Nuevo Pago</a>
+        </div>
+
+        <!-- Botones de filtro por mes -->
+        <div class="d-flex justify-content-center mb-4">
+            <button type="button" class="btn btn-outline-secondary mx-1" onclick="location.href='?month=1'">Enero</button>
+            <button type="button" class="btn btn-outline-secondary mx-1" onclick="location.href='?month=2'">Febrero</button>
+            <button type="button" class="btn btn-outline-secondary mx-1" onclick="location.href='?month=3'">Marzo</button>
+            <button type="button" class="btn btn-outline-secondary mx-1" onclick="location.href='?month=4'">Abril</button>
+            <button type="button" class="btn btn-outline-secondary mx-1" onclick="location.href='?month=5'">Mayo</button>
+            <button type="button" class="btn btn-outline-secondary mx-1" onclick="location.href='?month=6'">Junio</button>
+            <button type="button" class="btn btn-outline-secondary mx-1" onclick="location.href='?month=7'">Julio</button>
+            <button type="button" class="btn btn-outline-secondary mx-1" onclick="location.href='?month=8'">Agosto</button>
+            <button type="button" class="btn btn-outline-secondary mx-1" onclick="location.href='?month=9'">Septiembre</button>
+            <button type="button" class="btn btn-outline-secondary mx-1" onclick="location.href='?month=10'">Octubre</button>
+            <button type="button" class="btn btn-outline-secondary mx-1" onclick="location.href='?month=11'">Noviembre</button>
+            <button type="button" class="btn btn-outline-secondary mx-1" onclick="location.href='?month=12'">Diciembre</button>
+        </div>
+
+        <!-- Mostrar los pagos filtrados -->
+        <table class="table table-bordered">
+            <thead class="table-primary">
+                <tr>
+                    <th>Servicio</th>
+                    <th>Fecha 1er Vencimiento</th>
+                    <th>Fecha 2do Vencimiento</th>
+                    <th>Importe</th>
+                    <th>Fecha de Pago</th>
+                    <th>Pagado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pago in pagos %}
+                <tr>
+                    <td>{{ pago.servicio }}</td>
+                    <td>{{ pago.prim_venc|date:"d M Y" }}</td>
+                    <td>{{ pago.seg_venc|date:"d M Y" }}</td>
+                    <td>$ {{ pago.importe|floatformat:2|intcomma }}</td>
+                    <td>{{ pago.fec_pago|date:"d M Y" }}</td>
+                    <td>
+                        {% if pago.pagado %}
+                            <span class="text-success">&#10003;</span> <!-- Check -->
+                        {% else %}
+                            <span class="text-danger">&#10008;</span> <!-- X -->
+                        {% endif %}
+                    </td>
+                    <td>
+                        <!-- Botón para editar el pago -->
+                        <a href="{% url 'edit_pago' pago.id %}" class="btn btn-warning btn-sm">Editar</a>
+                        <!-- Botón para eliminar el pago -->
+                        <form action="{% url 'delete_pago' pago.id %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Mostrar el total pagado para el mes seleccionado -->
+        <div class="mt-4">
+            <h3 class="text-right">Total pagado en {% if selected_month == 1 %}Enero{% elif selected_month == 2 %}Febrero
+                {% elif selected_month == 3 %}Marzo{% elif selected_month == 4 %}Abril{% elif selected_month == 5 %}Mayo
+                {% elif selected_month == 6 %}Junio{% elif selected_month == 7 %}Julio{% elif selected_month == 8 %}Agosto
+                {% elif selected_month == 9 %}Septiembre{% elif selected_month == 10 %}Octubre{% elif selected_month == 11 %}
+                Noviembre{% elif selected_month == 12 %}Diciembre{% endif %}: ${{ total_pagado|floatformat:2|intcomma  }}</h3>
+        </div>
+    </div>
+</body>
+</html>
